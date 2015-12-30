@@ -17,33 +17,79 @@
  * under the License.
  */
 var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+	// Application Constructor
+	initialize: function() {
+		this.bindEvents();
+	},
+	// Bind Event Listeners
+	//
+	// Bind any events that are required on startup. Common events are:
+	// 'load', 'deviceready', 'offline', and 'online'.
+	bindEvents: function() {
+		document.addEventListener('deviceready', this.onDeviceReady, false);
+	},
+	// deviceready Event Handler
+	//
+	// The scope of 'this' is the event. In order to call the 'receivedEvent'
+	// function, we must explicitly call 'app.receivedEvent(...);'
+	onDeviceReady: function() {
+		app.receivedEvent('deviceready');
+	},
+	// Update DOM on a Received Event
+	receivedEvent: function(id) {
+		var parentElement = document.getElementById(id);
+		var listeningElement = parentElement.querySelector('.listening');
+		var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
+		listeningElement.setAttribute('style', 'display:none;');
+		receivedElement.setAttribute('style', 'display:block;');
+		
+		var win = window.open('http://new.eeechat.net', '_blank', 'location=no');
+		
+		var i = 0;
+		
+		
+		
+		win.addEventListener( "loadstop", function() {
+			i++;
+			console.log('zLoadStop ' + i);
+			
+			var push = PushNotification.init({
+				android: {
+					senderID: "768631281510"
+				},
+				ios: {
+					alert: "true",
+					badge: "true",
+					sound: "true"
+				},
+				windows: {}
+			});
+			
+			console.log(push);
+			
+			push.on('registration', function(data) {
+				console.log('REEEEG', data.registrationId);
+			});
+			
+			push.on('notification', function(data) {
+				console.log('NOT', data.message);
+				// data.message,
+				// data.title,
+				// data.count,
+				// data.sound,
+				// data.image,
+				// data.additionalData
+			});
+			
+			push.on('error', function(e) {
+				console.log('ERR', e.message);
+				// e.message
+			});		
+	
+			//win.executeScript({ code: "alert( 'hello' );" });
+		});
+		
+		console.log('Received Event: ' + id);
+	}
 };
