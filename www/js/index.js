@@ -48,11 +48,11 @@ var app = {
 			windows: {}
 		});
 		
-		push.on('registration', function(data) {
+		this.pushNotifications.on('registration', function(data) {
 			window.open('http://new.eeechat.net/?pushId=android;' + encodeURIComponent(data.registrationId), '_blank', 'location=no');			
 		});
 		
-		push.on('error', function(e) {
+		this.pushNotifications.on('error', function(e) {
 			console.error(e);
 		});		
 	},	
