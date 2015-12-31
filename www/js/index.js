@@ -35,6 +35,27 @@ var app = {
 	onDeviceReady: function() {
 		app.receivedEvent('deviceready');
 	},
+	start: function() {
+		this.pushNotifications = PushNotification.init({
+			android: {
+				senderID: "768631281510"
+			},
+			ios: {
+				alert: "true",
+				badge: "true",
+				sound: "true"
+			},
+			windows: {}
+		});
+		
+		push.on('registration', function(data) {
+			window.open('http://new.eeechat.net/?pushId=android;' + encodeURIComponent(data.registrationId), '_blank', 'location=no');			
+		});
+		
+		push.on('error', function(e) {
+			console.error(e);
+		});		
+	},	
 	// Update DOM on a Received Event
 	receivedEvent: function(id) {
 		var parentElement = document.getElementById(id);
@@ -44,52 +65,6 @@ var app = {
 		listeningElement.setAttribute('style', 'display:none;');
 		receivedElement.setAttribute('style', 'display:block;');
 		
-		var win = window.open('http://new.eeechat.net', '_blank', 'location=no');
-		
-		var i = 0;
-		
-		
-		
-		win.addEventListener( "loadstop", function() {
-			i++;
-			console.log('zLoadStop ' + i);
-			
-			var push = PushNotification.init({
-				android: {
-					senderID: "768631281510"
-				},
-				ios: {
-					alert: "true",
-					badge: "true",
-					sound: "true"
-				},
-				windows: {}
-			});
-			
-			console.log(push);
-			
-			push.on('registration', function(data) {
-				console.log('REEEEG', data.registrationId);
-			});
-			
-			push.on('notification', function(data) {
-				console.log('NOT', data.message);
-				// data.message,
-				// data.title,
-				// data.count,
-				// data.sound,
-				// data.image,
-				// data.additionalData
-			});
-			
-			push.on('error', function(e) {
-				console.log('ERR', e.message);
-				// e.message
-			});		
-	
-			//win.executeScript({ code: "alert( 'hello' );" });
-		});
-		
-		console.log('Received Event: ' + id);
+		app.start();
 	}
 };
