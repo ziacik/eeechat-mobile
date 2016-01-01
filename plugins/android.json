@@ -15,6 +15,9 @@
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "net.koliksoftware.eeechat"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "net.koliksoftware.eeechat"
         }
     },
     "dependent_plugins": {}

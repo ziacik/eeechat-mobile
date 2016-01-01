@@ -49,7 +49,7 @@ var app = {
 		});
 		
 		this.pushNotifications.on('registration', function(data) {
-			window.open('http://new.eeechat.net/?pushId=android;' + encodeURIComponent(data.registrationId), '_blank', 'location=no');			
+			cordova.InAppBrowser.open('http://new.eeechat.net/?pushId=' + device.platform + ';' + encodeURIComponent(data.registrationId), '_blank', 'location=no,toolbar=no,hardwareback=no');			
 		});
 		
 		this.pushNotifications.on('error', function(e) {
