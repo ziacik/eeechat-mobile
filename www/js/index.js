@@ -49,7 +49,13 @@ var app = {
 		});
 		
 		this.pushNotifications.on('registration', function(data) {
-			cordova.InAppBrowser.open('http://new.eeechat.net/?pushId=' + device.platform + ';' + encodeURIComponent(data.registrationId), '_blank', 'location=no,toolbar=no,hardwareback=no');			
+			var browser = cordova.InAppBrowser.open('http://new.eeechat.net/?pushId=' + device.platform + ';' + encodeURIComponent(data.registrationId), '_blank', 'location=no,toolbar=no,hardwareback=no');
+			browser.addEventListener('exit', function() {
+				//TODO Review: Should the 'exit' event be unbound?
+				if (navigator && navigator.app) {
+					navigator.app.exitApp();
+				}
+			});
 		});
 		
 		this.pushNotifications.on('error', function(e) {
